@@ -58,21 +58,20 @@ where
 
         // Fetch the provider from the path (format is /auth/{action}/{provider})
         let path = parts.uri.path();
-        let provider_name = match path.split('/').nth(2) {
+        let provider_id = match path.split('/').nth(2) {
             Some(provider) => provider,
             None => return Err(ExtractProviderError::ProviderUnavailable),
         };
 
         // Find the provider
-        let provider = api_context
-            .providers
-            .iter()
-            .find(|provider| provider.provider() == provider_name);
+        let provider = api_context.providers.iter().find(
+            |provider| provider.get_id().unwrap() == provider_id/* todo!() */, /* provider.provider() == provider_name */
+        );
 
         match provider {
             Some(provider) => Ok(ExtractProvider(provider.clone())),
             None => Err(ExtractProviderError::UnknownProvider(
-                provider_name.to_string(),
+                provider_id.to_string(),
             )),
         }
     }

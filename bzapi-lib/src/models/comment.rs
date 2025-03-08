@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 use crate::models::Post;
-use crate::models::User;
 use crate::models::Thread;
+use crate::models::User;
 
 /// ## Comment model
 ///   

@@ -1,8 +1,9 @@
 use bzapi_lib::{
+    // adapters::diesel::DieselAdapter, // todo
     api,
     api_context::{ApiContextParameters, DbManager, DbPool},
     logger,
-    providers::google::GoogleProvider,
+    providers::{discord::DiscordProvider, github::GithubProvider}, // providers::google::GoogleProvider,
 };
 use std::env;
 use tracing::{Level, debug, info};
@@ -27,7 +28,10 @@ async fn main() {
     debug!("🔵 Creating the api context");
     let api_context_parameters = ApiContextParameters {
         db_pool: db_pool.clone(),
-        providers: vec![Box::new(GoogleProvider::new_from_env().unwrap())],
+        providers: vec![
+            Box::new(GithubProvider::new_from_env().unwrap()),
+            Box::new(DiscordProvider::new_from_env().unwrap()),
+        ],
     };
 
     // Create the api context

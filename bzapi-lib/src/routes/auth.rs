@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use axum::routing::get;
 use axum::{Json, Router};
+use axum::{extract::Request, routing::get};
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -13,14 +13,16 @@ use super::errors::error404;
 
 async fn authorise(
     ExtractProvider(provider): ExtractProvider,
+    request: Request,
 ) -> Result<axum::http::Response<axum::body::Body>, axum::response::ErrorResponse> {
-    provider.authorize().await
+    provider.authorise(request).await
 }
 
 async fn callback(
     ExtractProvider(provider): ExtractProvider,
+    request: Request,
 ) -> Result<axum::http::Response<axum::body::Body>, axum::response::ErrorResponse> {
-    provider.authorize().await
+    provider.callback(request).await
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -32,8 +34,8 @@ struct Oauth2ProviderInfo {
 impl From<Box<dyn Oauth2Provider>> for Oauth2ProviderInfo {
     fn from(provider: Box<dyn Oauth2Provider>) -> Self {
         Oauth2ProviderInfo {
-            name: provider.provider(),
-            display_name: provider.display_name(),
+            name: provider.get_id().unwrap(),
+            display_name: provider.get_display_name().unwrap(),
         }
     }
 }
@@ -43,6 +45,7 @@ pub fn routes(providers: Arc<Oauth2Providers>) -> Router {
 
     router = router
         .route("/authorise/{provider}", get(authorise))
+        .route("/authorize/{provider}", get(authorise)) // for the americans
         .route("/callback/{provider}", get(callback))
         .route("/logout/{provider}", get(error404));
 

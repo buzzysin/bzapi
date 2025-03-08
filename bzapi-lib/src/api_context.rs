@@ -22,7 +22,7 @@ pub struct ApiContext {
 
 pub struct ApiContextParameters {
     pub db_pool: DbPool,
-    pub providers: Vec<Box<dyn Oauth2Provider>>,
+    pub providers: Oauth2Providers,
 }
 
 pub struct ApiAuthParameters {}

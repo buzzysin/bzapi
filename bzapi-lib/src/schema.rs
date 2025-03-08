@@ -1,85 +1,80 @@
-use diesel::allow_tables_to_appear_in_same_query;
-use diesel::joinable;
-use diesel::table;
-
-table! {
+diesel::table! {
   users (id) {
-      id -> Varchar,
-      name -> Varchar,
-      email -> Varchar,
+    id -> Varchar,
+    name -> Varchar,
+    email -> Varchar,
   }
 }
 
-table! {
+diesel::table! {
   providers (id) {
-      id -> Varchar,
-      name -> Varchar,
-      display_name -> Varchar,
-      description -> Varchar,
-      icon -> Varchar,
+    id -> Varchar,
+    name -> Varchar,
+    display_name -> Varchar,
+    description -> Varchar,
+    icon -> Varchar,
   }
 }
 
-table! {
+diesel::table! {
   categories (id) {
-      id -> Varchar,
-      name -> Varchar,
+    id -> Varchar,
+    name -> Varchar,
   }
 }
 
-table! {
-posts (id) {
-      id -> Varchar,
-      title -> Varchar,
-      content -> Varchar,
-      author_id -> Varchar,
-      created_at -> Varchar,
-      updated_at -> Varchar,
-      deleted_at -> Nullable<Varchar>,
+diesel::table! {
+  posts (id) {
+    id -> Varchar,
+    title -> Varchar,
+    content -> Varchar,
+    author_id -> Varchar,
+    created_at -> Varchar,
+    updated_at -> Varchar,
+    deleted_at -> Nullable<Varchar>,
   }
 }
 
-table! {
+diesel::table! {
   threads (id) {
-      id -> Varchar,
-      is_locked -> Bool,
-      is_sticky -> Bool,
-      created_at -> Varchar,
-      updated_at -> Varchar,
-      deleted_at -> Nullable<Varchar>,
+    id -> Varchar,
+    is_locked -> Bool,
+    is_sticky -> Bool,
+    created_at -> Varchar,
+    updated_at -> Varchar,
+    deleted_at -> Nullable<Varchar>,
   }
 }
 
-table! {
-comments (id) {
-      id -> Varchar,
-      content -> Varchar,
-      thread_id -> Varchar,
-      post_id -> Varchar,
-      user_id -> Varchar,
-      created_at -> Varchar,
-      updated_at -> Varchar,
-      deleted_at -> Nullable<Varchar>,
+diesel::table! {
+  comments (id) {
+    id -> Varchar,
+    content -> Varchar,
+    thread_id -> Varchar,
+    post_id -> Varchar,
+    user_id -> Varchar,
+    created_at -> Varchar,
+    updated_at -> Varchar,
+    deleted_at -> Nullable<Varchar>,
   }
 }
 
-table! {
+diesel::table! {
   tags (id) {
-        id -> Varchar,
-        name -> Varchar,
-    }
+    id -> Varchar,
+    name -> Varchar,
+    description -> Varchar,
+    created_at -> Varchar,
+    updated_at -> Varchar,
+    deleted_at -> Nullable<Varchar>,
+  }
 }
 
-joinable!(posts -> users (author_id));
-joinable!(comments -> posts (post_id));
-joinable!(comments -> users (user_id));
+// Define the relationships between the tables
+diesel::joinable!(posts -> users (author_id));
+diesel::joinable!(comments -> posts (post_id));
+diesel::joinable!(comments -> users (user_id));
+diesel::joinable!(comments -> threads (thread_id));
 
-allow_tables_to_appear_in_same_query!(
-    users,
-    providers,
-    categories,
-    posts,
-    comments,
-    tags,
-);
-
+// Just add all the tables here
+diesel::allow_tables_to_appear_in_same_query!(users, providers, categories, posts, comments, tags,);

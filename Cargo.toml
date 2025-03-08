@@ -1,9 +1,8 @@
 [workspace]
-members = ["bzapi", "bzapi-lib"]
+members = ["bzapi", "bzapi-lib", "bz-partial"]
 resolver = "2"
 
 [workspace.package]
 version = "0.1.0"
 authors = ["buzzysin <buzzysin@users.noreply.github.com>"]
 edition = "2024"
-

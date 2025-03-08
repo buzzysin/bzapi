@@ -5,9 +5,9 @@ authors.workspace = true
 edition.workspace = true
 
 [dependencies]
+bzapi-lib = { path = "../bzapi-lib" }
 tokio = { version = "1.43.0", features = ["full"] }
 diesel = { version = "2.2.7", features = ["sqlite"] }
-bzapi-lib = { path = "../bzapi-lib" }
 dotenvy = "0.15.7"
 # axum = { version = "0.8.1", features = ["macros"] }
 # tracing = "0.1.41"
