@@ -1,3 +1,6 @@
+# VSCode
+.vscode/
+
 # Rust dependencies
 /target/
 /Cargo.lock

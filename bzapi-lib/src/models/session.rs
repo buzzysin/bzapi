@@ -1,20 +1,17 @@
 use diesel::prelude::{Associations, Queryable, Selectable};
 
 use crate::models::user::User;
-use crate::models::post::Post;
 
 #[derive(Clone, Default, Queryable, Selectable, Associations)]
-#[diesel(table_name = crate::schema::comments)]
+#[diesel(table_name = crate::schema::sessions)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
-#[diesel(belongs_to(Post, foreign_key = author_id))]
-#[diesel(belongs_to(User, foreign_key = parent_id))]
-pub struct Comment {
+#[diesel(belongs_to(User, foreign_key = user_id))]
+pub struct Session {
     #[diesel(skip_insertion)]
     pub id: String,
-    pub content: String,
-    pub post_id: String,
-    pub author_id: String, // user_id
-    pub parent_id: Option<String>,
+    pub token: String,
+    pub expires_at: chrono::NaiveDateTime,
+    pub user_id: String,
     #[diesel(skip_insertion)]
     pub created_at: chrono::NaiveDateTime,
     pub updated_at: chrono::NaiveDateTime,

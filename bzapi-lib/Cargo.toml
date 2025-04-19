@@ -11,11 +11,18 @@ sqlite = ["diesel/sqlite"]
 [dependencies]
 # My internal dependencies
 # TODO: 
+bzauth-rs = { path = "../../bzauth-rs/bzauth-rs", features = [
+  "adapt_diesel",
+  "runtime_axum",
+] }
 
 # Core dependencies
 axum = { version = "0.8.1", features = ["macros"] }
 serde = { version = "1.0.218", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
+
+# Environment
+dotenvy = { version = "0.15.0" }
 
 # Dependencies for HTTP client
 reqwest = "0.12.12"
@@ -29,7 +36,9 @@ utoipa = { version = "5.3.1", features = ["axum_extras"] }
 utoipa-swagger-ui = { version = "9.0.0", features = ["axum"] }
 
 # Dependencies for database
-diesel = { version = "2.2.7", features = ["sqlite", "postgres", "r2d2"] }
+diesel = { version = "2.2.8", features = ["sqlite", "postgres", "r2d2"] }
+diesel_migrations = { version = "2.2.0", features = ["sqlite"] }
+chrono = "0.4.40"
 
 # Dependencies for logging
 tracing = "0.1.41"
@@ -38,7 +47,7 @@ tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 # Utility dependencies
 async-trait = "0.1.86"
 dyn-clone = "1.0.18"
-
+paste = "1.0.15"
 
 [dev-dependencies]
 # sqlx-cli = { version = "0.8.3", features = ["postgres"] }

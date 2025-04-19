@@ -1,29 +1,16 @@
-use diesel::prelude::Identifiable;
-use diesel::prelude::Queryable;
-use serde::Deserialize;
+use diesel::prelude::{Queryable, Selectable};
 use serde::Serialize;
-use utoipa::ToSchema;
 
-/// ## User model
-///
-/// The user is someone who uses my web app.
-#[derive(Serialize, Deserialize, ToSchema, Queryable, Identifiable)]
+#[derive(Clone, Default, Queryable, Selectable, Serialize)]
 #[diesel(table_name = crate::schema::users)]
+#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct User {
-    // Fields:
+    #[diesel(skip_insertion)]
     pub id: String,
-    pub name: String,
-    pub email: String,
-    // Relations: owns:
-    // Relatnions: belongs_to:
-    // Timestamps:
-}
-
-/// ## NewUser
-///
-/// The NewUser struct is the information needed to create a new user.
-#[derive(Serialize, Deserialize, ToSchema)]
-pub struct NewUser {
-    pub name: String,
-    pub email: String,
+    pub name: Option<String>,
+    pub email: Option<String>,
+    pub email_verified: Option<chrono::NaiveDateTime>,
+    pub image: Option<String>,
+    pub created_at: chrono::NaiveDateTime,
+    pub updated_at: chrono::NaiveDateTime,
 }

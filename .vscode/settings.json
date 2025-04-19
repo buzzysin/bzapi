@@ -1,5 +1,0 @@
-{
-  "rust-analyzer.formatting.command": "rustfmt",
-  "rust-analyzer.imports.granularity.enforce": "crate",
-  "rust-analyzer.checkOnSave.command": "check",
-}

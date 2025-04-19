@@ -1,42 +1,22 @@
-use bzapi_lib::{
-    // adapters::diesel::DieselAdapter, // todo
-    api,
-    api_context::{ApiContextParameters, DbManager, DbPool},
-    logger,
-    providers::{discord::DiscordProvider, github::GithubProvider}, // providers::google::GoogleProvider,
-};
-use std::env;
-use tracing::{Level, debug, info};
+use tokio::net::TcpListener;
+use tracing::debug;
 
 #[tokio::main]
 async fn main() {
-    // Load environment variables from .env file
-    debug!("🔵 Loading environment variables from .env file");
-    dotenvy::dotenv().ok();
+    // Initialize the API
+    let db_pool = bzapi_lib::init();
+    debug!("🟢 Initialisation complete");
 
-    // Initialise the logger
-    logger::init(Level::DEBUG);
+    // Create the API router
+    debug!("🔵 Creating API router");
+    let api = bzapi_lib::make_api(db_pool.clone());
+    debug!("🟢 API router created");
 
-    // Setup database connection from environment variables
-    debug!("🔵 Setting up database connection");
-    let db_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let db_manager = DbManager::new(db_url);
-    let db_pool = DbPool::builder()
-        .build(db_manager)
-        .expect("Failed to create connection pool");
-
-    debug!("🔵 Creating the api context");
-    let api_context_parameters = ApiContextParameters {
-        db_pool: db_pool.clone(),
-        providers: vec![
-            Box::new(GithubProvider::new_from_env().unwrap()),
-            Box::new(DiscordProvider::new_from_env().unwrap()),
-        ],
-    };
-
-    // Create the api context
-    info!("🚀 Serving the api");
-    api::serve("127.0.0.1:3000", api_context_parameters)
+    // Start a TCP listener and serve the API
+    debug!("🔵 Starting TCP listener");
+    let listener = TcpListener::bind("127.0.0.1:3001").await.unwrap();
+    debug!("🚀 Serving API...");
+    axum::serve(listener, api.into_make_service())
         .await
         .unwrap();
 }
