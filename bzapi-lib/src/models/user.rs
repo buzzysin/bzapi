@@ -1,7 +1,8 @@
 use diesel::prelude::{Queryable, Selectable};
 use serde::Serialize;
+use utoipa::ToSchema;
 
-#[derive(Clone, Default, Queryable, Selectable, Serialize)]
+#[derive(Clone, Default, Queryable, Selectable, Serialize, ToSchema)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct User {

@@ -1,6 +1,8 @@
-use diesel::prelude::{Associations, Insertable, Queryable, Selectable};
+use diesel::prelude::{Insertable, Queryable, Selectable};
+use serde::Serialize;
+use utoipa::ToSchema;
 
-#[derive(Debug, Clone, Default, Queryable, Selectable, Insertable)]
+#[derive(Debug, Clone, Default, Queryable, Selectable, Insertable, Serialize, ToSchema)]
 #[diesel(table_name = crate::schema::tags)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct Tag {

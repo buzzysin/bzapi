@@ -5,15 +5,14 @@ use bzauth_rs::{
     providers::{DiscordProvider, GoogleProvider},
     runtimes::axum::runtime::{AxumRuntime, AxumRuntimeOptions},
 };
-use diesel::{
-    SqliteConnection,
-    r2d2::{ConnectionManager, Pool},
-};
+use diesel::r2d2::{ConnectionManager, Pool};
+
+use crate::models::MyConnection;
 
 pub struct ApiAuthAdaptor;
 bzauth_rs::adapt_diesel!(
     ApiAuthAdaptor,
-    SqliteConnection,
+    MyConnection,
     User = crate::models::user::User,
     UserTable = crate::schema::users,
     Account = crate::models::account::Account,
@@ -24,7 +23,7 @@ bzauth_rs::adapt_diesel!(
     VerificationTokenTable = crate::schema::verification_tokens,
 );
 
-pub fn routes(conn_pool: Pool<ConnectionManager<SqliteConnection>>) -> Router {
+pub fn routes(conn_pool: Pool<ConnectionManager<MyConnection>>) -> Router {
     // Use the connection pool to create a new Diesel connection
     let diesel_options = DieselAdapterOptions {
         conn_pool,
@@ -48,7 +47,5 @@ pub fn routes(conn_pool: Pool<ConnectionManager<SqliteConnection>>) -> Router {
     } = AxumRuntime::from_options(axum_options);
 
     // Create the sub-router
-    Router::new()
-        .merge(auth_routes)
-        .layer(Extension(auth))
+    Router::new().merge(auth_routes).layer(Extension(auth))
 }

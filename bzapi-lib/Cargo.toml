@@ -18,8 +18,8 @@ bzauth-rs = { path = "../../bzauth-rs/bzauth-rs", features = [
 
 # Core dependencies
 axum = { version = "0.8.1", features = ["macros"] }
-serde = { version = "1.0.218", features = ["derive"] }
-tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0.219", features = ["derive"] }
+tokio = { version = "1.44.2", features = ["full"] }
 
 # Environment
 dotenvy = { version = "0.15.0" }
@@ -32,7 +32,7 @@ tower-http = { version = "0.6.2", features = ["trace"] }
 # Dependencies for future TS generation
 openapi = "0.1.5"
 oauth2 = "5.0.0"
-utoipa = { version = "5.3.1", features = ["axum_extras"] }
+utoipa = { version = "5.3.1", features = ["axum_extras", "chrono"] }
 utoipa-swagger-ui = { version = "9.0.0", features = ["axum"] }
 
 # Dependencies for database

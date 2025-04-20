@@ -1,8 +1,10 @@
 use diesel::prelude::{Associations, Queryable, Selectable};
+use serde::Serialize;
+use utoipa::ToSchema;
 
 use crate::models::user::User;
 
-#[derive(Clone, Default, Queryable, Selectable, Associations)]
+#[derive(Clone, Default, Queryable, Selectable, Associations, Serialize,ToSchema)]
 #[diesel(table_name = crate::schema::accounts)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 #[diesel(belongs_to(User, foreign_key = user_id))]

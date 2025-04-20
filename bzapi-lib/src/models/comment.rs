@@ -1,9 +1,11 @@
 use diesel::prelude::{Associations, Queryable, Selectable};
+use serde::Serialize;
+use utoipa::ToSchema;
 
 use crate::models::user::User;
 use crate::models::post::Post;
 
-#[derive(Clone, Default, Queryable, Selectable, Associations)]
+#[derive(Clone, Default, Queryable, Selectable, Associations, Serialize,ToSchema)]
 #[diesel(table_name = crate::schema::comments)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 #[diesel(belongs_to(Post, foreign_key = author_id))]

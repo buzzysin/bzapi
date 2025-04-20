@@ -8,3 +8,9 @@ pub mod verification_token;
 pub mod comment;
 pub mod post;
 pub mod tag;
+
+#[cfg(feature = "sqlite")]
+pub type MyConnection = diesel::SqliteConnection;
+
+#[cfg(feature = "postgres")]
+pub type MyConnection = diesel::PgConnection;
