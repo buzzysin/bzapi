@@ -33,9 +33,9 @@ pub fn routes(conn_pool: Pool<ConnectionManager<MyConnection>>) -> Router {
 
     // Create the auth options
     let auth_options = AuthOptions::new()
+        .with_adaptor(diesel_adaptor.into())
         .add_provider(DiscordProvider::new().into())
-        .add_provider(GoogleProvider::new().into())
-        .with_adaptor(diesel_adaptor.into());
+        .add_provider(GoogleProvider::new().into());
 
     // Create the Axum runtime options
     let axum_options = AxumRuntimeOptions { auth_options };

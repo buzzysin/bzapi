@@ -30,3 +30,6 @@
 *.sqlite
 *.sqlite3
 *.db
+
+# Other
+.trigger
