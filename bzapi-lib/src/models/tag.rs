@@ -6,7 +6,7 @@ use utoipa::ToSchema;
 #[diesel(table_name = crate::schema::tags)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct Tag {
-    #[diesel(skip_insertion)]
+    // #[diesel(skip_insertion)]
     pub id: String,
     pub name: String,
     pub description: Option<String>,

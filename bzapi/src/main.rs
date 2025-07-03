@@ -1,7 +1,6 @@
-use tokio::net::TcpListener;
-
 use diesel::SqliteConnection;
 use diesel::r2d2::{ConnectionManager, Pool};
+use tokio::net::TcpListener;
 
 #[tokio::main]
 async fn main() {
@@ -24,9 +23,9 @@ async fn main() {
     let db_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let db_pool = Pool::builder()
         .max_size(5)
-        .build(ConnectionManager::<SqliteConnection>::new(db_url))
+        .build(ConnectionManager::<SqliteConnection>::new(db_url.clone()))
         .expect("Failed to create database connection pool");
-    tracing::debug!("🟢 Database connection pool created");
+    tracing::debug!("🟢 Database connection pool created: {}", db_url);
 
     // Initialize the API
     bzapi_lib::run_migrations(db_pool.clone());

@@ -4,12 +4,12 @@ use utoipa::ToSchema;
 
 use crate::models::user::User;
 
-#[derive(Clone, Default, Queryable, Selectable, Associations, Serialize,ToSchema)]
+#[derive(Clone, Default, Queryable, Selectable, Associations, Serialize, ToSchema)]
 #[diesel(table_name = crate::schema::accounts)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 #[diesel(belongs_to(User, foreign_key = user_id))]
 pub struct Account {
-    #[diesel(skip_insertion)]
+    // #[diesel(skip_insertion)]
     pub id: String,
     pub provider_id: String,
     pub provider_account_id: String,

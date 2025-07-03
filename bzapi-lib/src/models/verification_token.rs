@@ -9,7 +9,7 @@ use crate::models::user::User;
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 #[diesel(belongs_to(User, foreign_key = email))]
 pub struct VerificationToken {
-    #[diesel(skip_insertion)]
+    // #[diesel(skip_insertion)]
     pub id: String,
     pub email: String,
     pub token: String,

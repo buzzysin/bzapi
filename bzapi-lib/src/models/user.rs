@@ -6,7 +6,7 @@ use utoipa::ToSchema;
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct User {
-    #[diesel(skip_insertion)]
+    // #[diesel(skip_insertion)]
     pub id: String,
     pub name: Option<String>,
     pub email: Option<String>,

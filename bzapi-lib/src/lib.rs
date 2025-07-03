@@ -6,13 +6,10 @@ pub mod schema;
 use axum::Router;
 use diesel::r2d2::{ConnectionManager, Pool};
 use diesel_migrations::{EmbeddedMigrations, MigrationHarness, embed_migrations};
-use tracing::debug;
-
 use models::MyConnection;
-use routes::{
-    auth::{self},
-    user,
-};
+use routes::auth::{self};
+use routes::user;
+use tracing::debug;
 
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!("../migrations/sqlite");
 
