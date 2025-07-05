@@ -5,8 +5,8 @@ edition = "2024"
 
 [features]
 default = ["sqlite"]
-postgres = ["diesel/postgres"]
-sqlite = ["diesel/sqlite"]
+sqlite = ["diesel/sqlite", "diesel/returning_clauses_for_sqlite_3_35"]
+postgres = [] # TODO: Docker to host Postgres
 
 [dependencies]
 # My internal dependencies
@@ -14,41 +14,42 @@ sqlite = ["diesel/sqlite"]
 bzauth-rs = { path = "../../bzauth-rs/bzauth-rs", features = [
   "adapt_diesel",
   "runtime_axum",
+  "backend_sqlite",
 ] }
 
 # Core dependencies
-axum = { version = "0.8.1", features = ["macros"] }
-serde = { version = "1.0.219", features = ["derive"] }
-tokio = { version = "1.44.2", features = ["full"] }
+axum = { version = "0.8", features = ["macros"] }
+serde = { version = "1.0", features = ["derive"] }
+tokio = { version = "1.44", features = ["full"] }
 
 # Environment
-dotenvy = { version = "0.15.0" }
+dotenvy = { version = "0.15" }
 
 # Dependencies for HTTP client
-reqwest = "0.12.12"
-tower = "0.5.2"
-tower-http = { version = "0.6.2", features = ["trace"] }
+reqwest = "0.12"
+tower = "0.5"
+tower-http = { version = "0.6", features = ["trace"] }
 
 # Dependencies for future TS generation
-openapi = "0.1.5"
-oauth2 = "5.0.0"
-utoipa = { version = "5.3.1", features = ["axum_extras", "chrono"] }
-utoipa-swagger-ui = { version = "9.0.0", features = ["axum"] }
+openapi = "0.1"
+oauth2 = "5.0"
+utoipa = { version = "5.4", features = ["axum_extras", "chrono"] }
+utoipa-swagger-ui = { version = "9.0", features = ["axum"] }
 
 # Dependencies for database
-diesel = { version = "2.2.8", features = ["sqlite", "postgres", "r2d2"] }
-diesel_migrations = { version = "2.2.0", features = ["sqlite"] }
-chrono = "0.4.40"
+diesel = { version = "2.2", features = ["r2d2"] }
+diesel_migrations = { version = "2.2", features = ["sqlite"] }
+chrono = "0.4"
 
 # Dependencies for logging
-tracing = "0.1.41"
-tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 # Utility dependencies
-async-trait = "0.1.86"
-dyn-clone = "1.0.18"
-paste = "1.0.15"
+async-trait = "0.1"
+dyn-clone = "1.0"
+paste = "1.0"
 
 [dev-dependencies]
-# sqlx-cli = { version = "0.8.3", features = ["postgres"] }
-# diesel_cli = { version = "2.2.7", features = ["sqlite", "postgres"] }
+# sqlx-cli = { version = "0.8", features = ["postgres"] }
+# diesel_cli = { version = "2.2", features = ["sqlite", "postgres"] }
