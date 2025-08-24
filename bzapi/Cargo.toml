@@ -4,16 +4,24 @@ version.workspace = true
 authors.workspace = true
 edition.workspace = true
 
+[features]
+default = ["axum", "diesel"]
+
 [dependencies]
 # Core
 bzapi-lib = { path = "../bzapi-lib" }
+bzauth-rs = { path = "../../bzauth-rs/bzauth-rs", features = [
+  "diesel",
+  "axum",
+  "sqlite",
+] }
 
 # Runtime
 tokio = { version = "1.44.2", features = ["full"] }
-axum = { version = "0.8.1", features = ["macros"] }
+axum = { version = "0.8.1", features = ["macros"], optional = true }
 
 # Database
-diesel = { version = "2.2.9", features = ["r2d2", "sqlite"] }
+diesel = { version = "2.2.9", features = ["r2d2", "sqlite"], optional = true }
 
 # Logging
 tracing = "0.1.41"
@@ -21,3 +29,7 @@ tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 
 # Environment
 dotenvy = "0.15.7"
+
+# Utility dependencies
+paste = "1.0"
+chrono = "0.4"

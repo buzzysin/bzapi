@@ -4,21 +4,26 @@ version = "0.1.0"
 edition = "2024"
 
 [features]
-default = ["sqlite"]
-sqlite = ["diesel/sqlite", "diesel/returning_clauses_for_sqlite_3_35"]
-postgres = [] # TODO: Docker to host Postgres
+default = ["axum", "diesel", "sqlite"]
+
+sqlite = [ 
+  "bzauth-rs/sqlite"
+]
+postgres = [
+  "bzauth-rs/postgres"
+]
 
 [dependencies]
 # My internal dependencies
 # TODO: 
 bzauth-rs = { path = "../../bzauth-rs/bzauth-rs", features = [
-  "adapt_diesel",
-  "runtime_axum",
-  "backend_sqlite",
+  "diesel",
+  "axum",
+  "sqlite",
 ] }
 
 # Core dependencies
-axum = { version = "0.8", features = ["macros"] }
+axum = { version = "0.8", features = ["macros"], optional = true}
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1.44", features = ["full"] }
 
@@ -28,7 +33,7 @@ dotenvy = { version = "0.15" }
 # Dependencies for HTTP client
 reqwest = "0.12"
 tower = "0.5"
-tower-http = { version = "0.6", features = ["trace"] }
+tower-http = { version = "0.6", features = ["trace", "cors"] }
 
 # Dependencies for future TS generation
 openapi = "0.1"
@@ -37,7 +42,7 @@ utoipa = { version = "5.4", features = ["axum_extras", "chrono"] }
 utoipa-swagger-ui = { version = "9.0", features = ["axum"] }
 
 # Dependencies for database
-diesel = { version = "2.2", features = ["r2d2"] }
+diesel = { version = "2.2", features = ["r2d2"], optional = true }
 diesel_migrations = { version = "2.2", features = ["sqlite"] }
 chrono = "0.4"
 
