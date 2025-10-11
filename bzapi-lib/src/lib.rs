@@ -30,22 +30,22 @@ pub fn run_migrations(db_pool: Pool<ConnectionManager<MyConnection>>) {
 }
 
 fn cors_layer() -> tower_http::cors::CorsLayer {
-    let layer = tower_http::cors::CorsLayer::new()
-        .allow_methods(tower_http::cors::Any)
-        .allow_headers(tower_http::cors::Any)
-        .max_age(tower_http::cors::MaxAge::exact(Duration::from_secs(3600)))
-        .pipe(|layer: tower_http::cors::CorsLayer| {
+    use tower_http::cors::*;
+
+    CorsLayer::new()
+        .allow_methods(Any)
+        .allow_headers(Any)
+        .max_age(MaxAge::exact(Duration::from_secs(3600)))
+        .pipe(|layer: CorsLayer| {
             #[cfg(debug_assertions)]
             {
-                layer.allow_origin(tower_http::cors::Any)
+                layer.allow_origin(Any)
             }
             #[cfg(not(debug_assertions))]
             {
                 layer
             }
-        });
-
-    layer
+        })
 }
 
 pub fn make_api(axum_options: AxumRuntimeOptions) -> Router {
