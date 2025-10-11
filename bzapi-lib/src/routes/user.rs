@@ -1,24 +1,25 @@
-use axum::Json;
-use axum::Router;
-use axum::routing::get;
+use axum::{Json, Router};
 
-use crate::models::User;
-use crate::models::user::NewUser;
-
-#[utoipa::path(get, path = "/")]
-pub async fn all() -> Json<Vec<User>> {
-    Json(vec![])
-}
-
-#[utoipa::path(get, path = "/new")]
-pub async fn new(user: Json<NewUser>) -> Json<User> {
-    Json(User {
-        id: "0".to_string(),
-        email: user.email.clone(),
-        name: user.name.clone(),
-    })
-}
+use crate::models::user::User;
 
 pub fn routes() -> Router {
-    Router::new().route("/", get(all)).route("/new", get(new))
+    Router::new().route("/", axum::routing::get(test))
+}
+
+#[axum::debug_handler]
+async fn test() -> Json<Vec<User>> {
+    let users = vec![
+        User {
+            name: Some("John Doe".to_string()),
+            email: Some("john.doe@example.com".to_string()),
+            ..Default::default()
+        },
+        User {
+            name: Some("Jane Doe".to_string()),
+            email: Some("jane.doe@example.com".to_string()),
+            ..Default::default()
+        },
+    ];
+
+    Json(users)
 }

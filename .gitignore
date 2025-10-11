@@ -1,3 +1,6 @@
+# VSCode
+.vscode/
+
 # Rust dependencies
 /target/
 /Cargo.lock
@@ -27,3 +30,8 @@
 *.sqlite
 *.sqlite3
 *.db
+*-shm
+*-wal
+
+# Other
+.trigger

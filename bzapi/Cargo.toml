@@ -4,26 +4,32 @@ version.workspace = true
 authors.workspace = true
 edition.workspace = true
 
+[features]
+default = ["axum", "diesel"]
+
 [dependencies]
-tokio = { version = "1.43.0", features = ["full"] }
-diesel = { version = "2.2.7", features = ["sqlite"] }
+# Core
 bzapi-lib = { path = "../bzapi-lib" }
-dotenvy = "0.15.7"
-# axum = { version = "0.8.1", features = ["macros"] }
-# tracing = "0.1.41"
-# tracing-subscriber = "0.3.19"
-axum = { version = "0.8.1", features = ["macros"] }
-serde = { version = "1.0.218", features = ["derive"] }
-# tokio = { version = "1", features = ["full"] }
-utoipa = { version = "5.3.1", features = ["axum_extras"] }
-utoipa-swagger-ui = { version = "9.0.0", features = ["axum"] }
-openapi = "0.1.5"
-oauth2 = "5.0.0"
-reqwest = "0.12.12"
-# diesel = { version = "2.2.7", features = ["sqlite", "postgres", "r2d2"] }
-async-trait = "0.1.86"
+bzauth-rs = { path = "../../bzauth-rs/bzauth-rs", features = [
+  "diesel",
+  "axum",
+  "sqlite",
+] }
+
+# Runtime
+tokio = { version = "1.44.2", features = ["full"] }
+axum = { version = "0.8.1", features = ["macros"], optional = true }
+
+# Database
+diesel = { version = "2.2.9", features = ["r2d2", "sqlite"], optional = true }
+
+# Logging
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
-dyn-clone = "1.0.18"
-tower = "0.5.2"
-tower-http = { version = "0.6.2", features = ["trace"] }
+
+# Environment
+dotenvy = "0.15.7"
+
+# Utility dependencies
+paste = "1.0"
+chrono = "0.4"

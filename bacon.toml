@@ -1,0 +1,16 @@
+[jobs.format]
+command = ["./scripts/format.sh"]
+need_stdout = true
+allow_warnings = true
+background = false
+
+[jobs.run]
+command = ["cargo", "run"]
+need_stdout = true
+allow_warnings = true
+background = false
+kill = ["pkill", "-TERM", "-P"]
+on_change_strategy = "kill_then_restart"
+
+[keybindings]
+f = "job:format"

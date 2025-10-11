@@ -4,36 +4,57 @@ version = "0.1.0"
 edition = "2024"
 
 [features]
-default = ["sqlite"]
-postgres = ["diesel/postgres"]
-sqlite = ["diesel/sqlite"]
+default = ["axum", "diesel", "sqlite"]
+
+sqlite = [ 
+  "bzauth-rs/sqlite"
+]
+postgres = [
+  "bzauth-rs/postgres"
+]
 
 [dependencies]
-axum = { version = "0.8.1", features = ["macros"] }
-serde = { version = "1.0.218", features = ["derive"] }
-tokio = { version = "1", features = ["full"] }
-utoipa = { version = "5.3.1", features = ["axum_extras"] }
-utoipa-swagger-ui = { version = "9.0.0", features = ["axum"] }
-openapi = "0.1.5"
-oauth2 = "5.0.0"
-reqwest = "0.12.12"
-diesel = { version = "2.2.7", features = ["sqlite", "postgres", "r2d2"] }
-async-trait = "0.1.86"
-tracing = "0.1.41"
-tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
-dyn-clone = "1.0.18"
-tower = "0.5.2"
-tower-http = { version = "0.6.2", features = ["trace"] }
-# sqlx = { version = "0.8.3", features = [
-#   "runtime-tokio-rustls",
-#   "postgres",
-#   "sqlite",
-#   "macros",
-#   "migrate",
-# ] }
-# tower = "0.4.0"
-# tower-http = "0.4.0"
+# My internal dependencies
+# TODO: 
+bzauth-rs = { path = "../../bzauth-rs/bzauth-rs", features = [
+  "diesel",
+  "axum",
+  "sqlite",
+] }
+
+# Core dependencies
+axum = { version = "0.8", features = ["macros"], optional = true}
+serde = { version = "1.0", features = ["derive"] }
+tokio = { version = "1.44", features = ["full"] }
+
+# Environment
+dotenvy = { version = "0.15" }
+
+# Dependencies for HTTP client
+reqwest = "0.12"
+tower = "0.5"
+tower-http = { version = "0.6", features = ["trace", "cors"] }
+
+# Dependencies for future TS generation
+openapi = "0.1"
+oauth2 = "5.0"
+utoipa = { version = "5.4", features = ["axum_extras", "chrono"] }
+utoipa-swagger-ui = { version = "9.0", features = ["axum"] }
+
+# Dependencies for database
+diesel = { version = "2.2", features = ["r2d2"], optional = true }
+diesel_migrations = { version = "2.2", features = ["sqlite"] }
+chrono = "0.4"
+
+# Dependencies for logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Utility dependencies
+async-trait = "0.1"
+dyn-clone = "1.0"
+paste = "1.0"
 
 [dev-dependencies]
-# sqlx-cli = { version = "0.8.3", features = ["postgres"] }
-# diesel_cli = { version = "2.2.7", features = ["sqlite", "postgres"] }
+# sqlx-cli = { version = "0.8", features = ["postgres"] }
+# diesel_cli = { version = "2.2", features = ["sqlite", "postgres"] }

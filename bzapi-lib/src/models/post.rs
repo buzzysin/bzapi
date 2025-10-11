@@ -1,26 +1,21 @@
-use super::User;
-
-use diesel::prelude::Associations;
-use diesel::prelude::Identifiable;
-use diesel::prelude::Queryable;
-use serde::Deserialize;
+use diesel::prelude::{Associations, Queryable, Selectable};
 use serde::Serialize;
 use utoipa::ToSchema;
 
-#[derive(Serialize, Deserialize, ToSchema, Queryable, Identifiable, Associations)]
+use crate::models::user::User;
+
+#[derive(Clone, Default, Queryable, Selectable, Associations, Serialize, ToSchema)]
 #[diesel(table_name = crate::schema::posts)]
+#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 #[diesel(belongs_to(User, foreign_key = author_id))]
 pub struct Post {
-    // Fields:
+    // #[diesel(skip_insertion)]
     pub id: String,
     pub title: String,
-    pub content: String,
-    // Relations: owns:
-
-    // Relatnions: belongs_to:
-    pub author_id: String,
-    // Timestamps:
-    pub created_at: String,
-    pub updated_at: String,
-    pub deleted_at: Option<String>,
+    pub content: Option<String>,
+    pub draft: bool,
+    pub author_id: String, // user_id
+    #[diesel(skip_insertion)]
+    pub created_at: chrono::NaiveDateTime,
+    pub updated_at: chrono::NaiveDateTime,
 }
