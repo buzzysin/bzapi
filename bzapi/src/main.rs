@@ -32,7 +32,7 @@ async fn main() {
 
     // Create the api context
     info!("🚀 Serving the api");
-    api::serve("127.0.0.1:3000", api_context_parameters)
+    api::serve("127.0.0.1:3001", api_context_parameters)
         .await
         .unwrap();
 }
